@@ -1,6 +1,435 @@
-git init
-git add index_v2.html
-git commit -m "Formulaire Cousinades 2025"
-git branch -M main
-git remote add origin https://github.com/<votre-user>/<cousinades-2025>.git
-git push -u origin main
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cousinades 2025 — Inscription & Choix de menu (v2)</title>
+  <style>
+    :root{--bg:#f7f7fb;--panel:#ffffff;--ink:#1f2937;--ink-soft:#4b5563;--primary:#2563eb;--primary-ink:#fff;--muted:#e5e7eb;--accent:#dbeafe;--danger:#b91c1c;--success:#065f46}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.4}
+    header{position:sticky;top:0;background:rgba(247,247,251,.9);backdrop-filter:saturate(180%) blur(6px);border-bottom:1px solid var(--muted);z-index:30}
+    header .wrap{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;gap:16px;align-items:center;justify-content:space-between}
+    h1{font-size:clamp(1.2rem,2.2vw,1.6rem);margin:0}
+    main{max-width:1000px;margin:0 auto;padding:24px 16px 120px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:880px){.grid{grid-template-columns:2fr 1.1fr}}
+    .card{background:var(--panel);border:1px solid var(--muted);border-radius:12px;padding:16px}
+    .card h2{margin-top:0;font-size:1.1rem}
+    fieldset{border:1px solid var(--muted);border-radius:10px;padding:12px;margin:12px 0}
+    legend{padding:0 8px}
+    label{display:block;font-weight:600;margin:.4rem 0 .2rem}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="number"],select,textarea{width:100%;padding:10px;border:1px solid var(--muted);border-radius:8px;background:#fff;color:var(--ink);font-size:1rem}
+    input[type="number"]{max-width:180px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row > *{flex:1 1 180px}
+    .muted{color:var(--ink-soft);font-size:.95rem}
+    details{border:1px dashed var(--muted);border-radius:10px;padding:10px;background:#fafafa}
+    details summary{cursor:pointer;font-weight:600}
+    .adult-card,.child-card{border:1px solid var(--muted);border-radius:10px;padding:12px;margin-bottom:12px;background:#fbfdff}
+    .adult-card h4,.child-card h4{margin:.2rem 0 .6rem}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .btn{display:inline-flex;gap:8px;align-items:center;justify-content:center;border:1px solid var(--primary);background:var(--primary);color:var(--primary-ink);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;text-decoration:none}
+    .btn.secondary{background:#fff;color:var(--primary);border-color:var(--primary)}
+    .btn.ghost{background:#fff;color:var(--ink);border-color:var(--muted)}
+    .btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .pill{display:inline-block;background:var(--accent);border:1px solid #bfdbfe;color:#1e40af;padding:2px 8px;border-radius:999px;font-size:.9rem}
+    .summary{position:sticky;top:64px;padding:16px;border-radius:12px;border:1px solid var(--muted);background:#fff}
+    .summary h3{margin-top:0}
+    .money{font-variant-numeric:tabular-nums}
+    .line{display:flex;justify-content:space-between;gap:12px;margin:6px 0}
+    .line b{white-space:nowrap}
+    .total{font-size:1.4rem;font-weight:800}
+    .ok{color:var(--success);font-weight:700}
+    .err{color:var(--danger)}
+    .hint{font-size:.92rem;color:var(--ink-soft)}
+    .small{font-size:.9rem}
+    .foot{margin-top:8px;padding-top:8px;border-top:1px dashed var(--muted)}
+    .success-box{display:none;border:1px solid #bbf7d0;background:#ecfdf5;color:#064e3b;padding:12px;border-radius:10px;margin-top:12px}
+    .error-box{display:none;border:1px solid #fecaca;background:#fff1f2;color:#7f1d1d;padding:12px;border-radius:10px;margin-top:12px}
+    .kbd{font-family:ui-monospace,Menlo,Consolas,monospace;background:#f3f4f6;border:1px solid #e5e7eb;border-bottom-width:2px;border-radius:6px;padding:2px 6px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Cousinades 2025 — Inscription & choix de menu</h1>
+      <span class="pill">Événement : 21 septembre 2025</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <h2>1) Coordonnées de la personne référente</h2>
+      <p class="muted">Ce formulaire confirme votre participation, recueille les choix de menus et calcule automatiquement le montant à régler.</p>
+      <form id="resaForm" novalidate>
+        <fieldset>
+          <legend>Contact</legend>
+          <div class="row">
+            <div><label for="refNom">Nom</label><input id="refNom" name="refNom" type="text" required /></div>
+            <div><label for="refPrenom">Prénom</label><input id="refPrenom" name="refPrenom" type="text" required /></div>
+          </div>
+          <div class="row">
+            <div><label for="refTel">Téléphone</label><input id="refTel" name="refTel" type="tel" placeholder="+33 6 12 34 56 78" pattern="^(\+?\\d[\\d\\s\\-]{6,})$" required /></div>
+            <div><label for="refEmail">Email</label><input id="refEmail" name="refEmail" type="email" placeholder="prenom.nom@email.fr" required /></div>
+          </div>
+        </fieldset>
+
+        <h2>2) Convives & menus</h2>
+
+        <fieldset>
+          <legend>Menus adultes</legend>
+          <div class="row controls">
+            <div>
+              <label for="nbAdults">Nombre de menus adultes <span class="small muted">(incluant la personne référente)</span></label>
+              <input id="nbAdults" name="nbAdults" type="number" min="0" max="50" step="1" value="1" required />
+            </div>
+            <div class="hint">Prix : <b>52 € / adulte</b></div>
+          </div>
+          <div id="adultList"></div>
+          <details>
+            <summary>Voir les choix de menu adultes</summary>
+            <div class="row">
+              <div class="card" style="flex:1">
+                <h3>Entrées</h3>
+                <ul class="muted"><li>Tarte fine de tomate, chèvre et olive</li><li>Flan de saumon et courgette, crème à l'aneth</li></ul>
+              </div>
+              <div class="card" style="flex:1">
+                <h3>Plats</h3>
+                <ul class="muted"><li>Dos de cabillaud, pesto rouge</li><li>Pavé de veau, sauce au poivre</li></ul>
+              </div>
+              <div class="card" style="flex:1">
+                <h3>Desserts</h3>
+                <ul class="muted"><li>Tarte au citron, citron vert</li><li>Mi-cuit au chocolat, crème anglaise</li></ul>
+              </div>
+            </div>
+          </details>
+        </fieldset>
+
+        <fieldset>
+          <legend>Menus enfants</legend>
+          <div class="row controls">
+            <div><label for="nbKids">Nombre de menus enfants</label><input id="nbKids" name="nbKids" type="number" min="0" max="50" step="1" value="0" required /></div>
+            <div class="hint">Prix : <b>19 € / enfant</b></div>
+          </div>
+          <div id="childList"></div>
+          <details><summary>Détails du menu enfant</summary><div class="muted"><ul><li>Steak haché Charolais, frites</li><li>Gâteau au chocolat</li><li>Boisson au choix</li></ul></div></details>
+        </fieldset>
+
+        <fieldset>
+          <legend>Boissons (option alcool)</legend>
+          <p class="muted">1 bouteille pour 3 personnes. Facturation : <b>7 € / personne et par type de vin</b>. (Par défaut : adultes uniquement)</p>
+          <div class="row">
+            <div><label for="vinBlanc">Vin blanc</label><select id="vinBlanc" name="vinBlanc"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+            <div><label for="vinRouge">Vin rouge</label><select id="vinRouge" name="vinRouge"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Allergies alimentaires</legend>
+          <div class="row">
+            <div><label for="allergies">Présence d'allergies ?</label><select id="allergies" name="allergies"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+            <div style="flex:2"><label for="allergiesTexte">Si oui, précisez :</label><textarea id="allergiesTexte" name="allergiesTexte" rows="2" placeholder="Ex. : arachides (Paul), lactose (Emma)…" disabled></textarea></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Validation</legend>
+          <label class="muted">Merci d’effectuer le virement pour l’ensemble des convives <b>avant le <span id="deadline"></span></b>. <span id="rib" class="hint"></span></label>
+        </fieldset>
+
+        <div class="controls" style="margin-top:12px">
+          <button type="submit" class="btn">Envoyer la réservation</button>
+          <button type="button" id="downloadJson" class="btn secondary">Télécharger le récapitulatif (.json)</button>
+          <button type="button" id="printRecap" class="btn ghost">Imprimer le récapitulatif</button>
+        </div>
+
+        <div id="successBox" class="success-box">✅ Merci ! Votre réservation a bien été envoyée.</div>
+        <div id="errorBox" class="error-box">❌ Échec de l’envoi. Vérifiez votre connexion, l’URL Apps Script, ou réessayez.</div>
+        <div class="hint small" style="margin-top:6px">En cas de blocage CORS, l’application tentera automatiquement un envoi <span class="kbd">no-cors</span> (réponse non lisible par le navigateur). Consultez alors directement le Google Sheet pour confirmer la réception.</div>
+      </form>
+    </section>
+
+    <aside class="summary">
+      <h3>Récapitulatif & total</h3>
+      <div class="line"><span>Menus adultes</span><b class="money" id="adultTotal">—</b></div>
+      <div class="line"><span>Menus enfants</span><b class="money" id="kidTotal">—</b></div>
+      <div class="line"><span>Vin blanc</span><b class="money" id="whiteWine">—</b></div>
+      <div class="line"><span>Vin rouge</span><b class="money" id="redWine">—</b></div>
+      <div class="line foot"><span>Bouteilles (blanc / rouge)</span><b id="bottles">—</b></div>
+      <div class="line total"><span>Total</span><b class="money" id="grandTotal">—</b></div>
+      <hr>
+      <div><div class="small muted" id="controlsMsg">Renseignez le nombre d’adultes / enfants pour commencer.</div></div>
+    </aside>
+  </main>
+
+  <script>
+    // === CONFIGURATION ===
+    const CONFIG = {
+      PRIX_MENU_ADULTE: 52,
+      PRIX_MENU_ENFANT: 19,
+      PRIX_VIN_PAR_PERSONNE: 7,
+      CHARGE_VIN_SUR_ADULTES_SEULEMENT: true,
+      DEADLINE_VIREMENT: "31 août 2025",
+      RIB_DETAILS: "RIB à venir (sera communiqué).",
+      APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbypzRn8WE6uANGyTTUy_gWOqCUdCU_UZn4sBCEcyL9ywGfWqpixcfyWwfNTQeaOZMTnRg/exec" // <-- COLLER ICI l'URL de votre déploiement Apps Script
+    };
+
+    const fmtEUR = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' });
+    const byId = id => document.getElementById(id);
+    const toCents = x => Math.round((x ?? 0) * 100);
+    const fromCents = c => (c ?? 0) / 100;
+
+    const entreeOptions = [
+      "Tarte fine de tomate, chèvre et olive",
+      "Flan de saumon et courgette, crème à l'aneth"
+    ];
+    const platOptions = [
+      "Dos de cabillaud, pesto rouge",
+      "Pavé de veau, sauce au poivre"
+    ];
+    const dessertOptions = [
+      "Tarte au citron, citron vert",
+      "Mi-cuit au chocolat, crème anglaise"
+    ];
+
+    function adultCardTemplate(i){
+      return `
+      <div class="adult-card" data-index="${i}">
+        <h4>Adulte #${i+1}</h4>
+        <div class="row">
+          <div><label>Nom</label><input type="text" name="adults[${i}][nom]" required></div>
+          <div><label>Prénom</label><input type="text" name="adults[${i}][prenom]" required></div>
+        </div>
+        <div class="row">
+          <div><label>Entrée</label><select name="adults[${i}][entree]" required><option value="">— Choisir —</option>${entreeOptions.map(v=>`<option value="${v}">${v}</option>`).join("")}</select></div>
+          <div><label>Plat</label><select name="adults[${i}][plat]" required><option value="">— Choisir —</option>${platOptions.map(v=>`<option value="${v}">${v}</option>`).join("")}</select></div>
+          <div><label>Dessert</label><select name="adults[${i}][dessert]" required><option value="">— Choisir —</option>${dessertOptions.map(v=>`<option value="${v}">${v}</option>`).join("")}</select></div>
+        </div>
+      </div>`;
+    }
+
+    function childCardTemplate(i){
+      return `
+      <div class="child-card" data-index="${i}">
+        <h4>Enfant #${i+1}</h4>
+        <div class="row">
+          <div><label>Nom</label><input type="text" name="kids[${i}][nom]" required></div>
+          <div><label>Prénom</label><input type="text" name="kids[${i}][prenom]" required></div>
+        </div>
+      </div>`;
+    }
+
+    function rebuildAdults(n){
+      const wrap = byId('adultList'); wrap.innerHTML = "";
+      const count = Math.max(0, Math.min(50, Number(n)||0));
+      for(let i=0;i<count;i++){ wrap.insertAdjacentHTML('beforeend', adultCardTemplate(i)); }
+      updateSummary();
+    }
+    function rebuildKids(n){
+      const wrap = byId('childList'); wrap.innerHTML = "";
+      const count = Math.max(0, Math.min(50, Number(n)||0));
+      for(let i=0;i<count;i++){ wrap.insertAdjacentHTML('beforeend', childCardTemplate(i)); }
+      updateSummary();
+    }
+
+    function readForm(){
+      const nbAdults = Math.max(0, Number(byId('nbAdults').value||0));
+      const nbKids = Math.max(0, Number(byId('nbKids').value||0));
+      const vinBlanc = byId('vinBlanc').value === 'oui';
+      const vinRouge = byId('vinRouge').value === 'oui';
+      const allergies = byId('allergies').value;
+      const allergiesTexte = byId('allergiesTexte').value.trim();
+
+      const adults = [...document.querySelectorAll('.adult-card')].map(node => {
+        const i = Number(node.dataset.index);
+        return {
+          nom: node.querySelector(`input[name="adults[${i}][nom]"]`)?.value?.trim() || "",
+          prenom: node.querySelector(`input[name="adults[${i}][prenom]"]`)?.value?.trim() || "",
+          entree: node.querySelector(`select[name="adults[${i}][entree]"]`)?.value || "",
+          plat: node.querySelector(`select[name="adults[${i}][plat]"]`)?.value || "",
+          dessert: node.querySelector(`select[name="adults[${i}][dessert]"]`)?.value || ""
+        };
+      });
+      const kids = [...document.querySelectorAll('.child-card')].map(node => {
+        const i = Number(node.dataset.index);
+        return {
+          nom: node.querySelector(`input[name="kids[${i}][nom]"]`)?.value?.trim() || "",
+          prenom: node.querySelector(`input[name="kids[${i}][prenom]"]`)?.value?.trim() || ""
+        };
+      });
+
+      const adultMenusCents = toCents(CONFIG.PRIX_MENU_ADULTE) * nbAdults;
+      const kidMenusCents = toCents(CONFIG.PRIX_MENU_ENFANT) * nbKids;
+      const consumers = CONFIG.CHARGE_VIN_SUR_ADULTES_SEULEMENT ? nbAdults : (nbAdults + nbKids);
+      const unitWineCents = toCents(CONFIG.PRIX_VIN_PAR_PERSONNE);
+      const wineWhiteCents = vinBlanc ? unitWineCents * consumers : 0;
+      const wineRedCents = vinRouge ? unitWineCents * consumers : 0;
+      const bottlesWhite = vinBlanc ? Math.ceil(consumers / 3) : 0;
+      const bottlesRed = vinRouge ? Math.ceil(consumers / 3) : 0;
+      const grandTotalCents = adultMenusCents + kidMenusCents + wineWhiteCents + wineRedCents;
+
+      const countBy = (arr,key)=>arr.reduce((acc,o)=>{if(o[key]) acc[o[key]]=(acc[o[key]]||0)+1; return acc;},{});
+      const recap = {entrees:countBy(adults,'entree'), plats:countBy(adults,'plat'), desserts:countBy(adults,'dessert')};
+
+      const contact = {
+        nom: byId('refNom').value.trim(),
+        prenom: byId('refPrenom').value.trim(),
+        tel: byId('refTel').value.trim(),
+        email: byId('refEmail').value.trim()
+      };
+
+      return {contact, nbAdults, nbKids, adults, kids,
+        vin:{blanc:vinBlanc, rouge:vinRouge, consumers, bottlesWhite, bottlesRed},
+        allergies:{present:allergies, details:allergiesTexte},
+        prices:{adultMenusCents,kidMenusCents,wineWhiteCents,wineRedCents,grandTotalCents},
+        recap};
+    }
+
+    function updateSummary(){
+      const hasAll = byId('allergies').value === 'oui';
+      byId('allergiesTexte').disabled = !hasAll;
+      if(!hasAll){ byId('allergiesTexte').value = ""; }
+
+      const d = readForm();
+      byId('adultTotal').textContent = fmtEUR.format(fromCents(d.prices.adultMenusCents));
+      byId('kidTotal').textContent = fmtEUR.format(fromCents(d.prices.kidMenusCents));
+      byId('whiteWine').textContent = d.vin.blanc ? fmtEUR.format(fromCents(d.prices.wineWhiteCents)) : "—";
+      byId('redWine').textContent = d.vin.rouge ? fmtEUR.format(fromCents(d.prices.wineRedCents)) : "—";
+      byId('bottles').textContent = d.vin.blanc || d.vin.rouge ? `${d.vin.bottlesWhite} / ${d.vin.bottlesRed}` : "—";
+      byId('grandTotal').textContent = fmtEUR.format(fromCents(d.prices.grandTotalCents));
+
+      const msg = [];
+      if(d.nbAdults <= 0) msg.push("⚠️ Ajoutez au moins 1 menu adulte.");
+      if(d.adults.some(a => !(a.nom && a.prenom && a.entree && a.plat && a.dessert))) msg.push("⚠️ Complétez les noms et choix pour chaque adulte.");
+      if(d.kids.some(k => !(k.nom && k.prenom))) msg.push("⚠️ Complétez les noms/prénoms de chaque enfant.");
+      if(d.allergies.present === 'oui' && !d.allergies.details) msg.push("⚠️ Précisez les allergies.");
+      byId('controlsMsg').innerHTML = msg.length ? msg.map(m=>`<div>${m}</div>`).join("") : `<span class="ok">Tout est prêt ✅</span>`;
+    }
+
+    function buildPayload(){
+      const d = readForm();
+      return {
+        meta:{app:"Cousinades-2025-Form",version:2,generatedAt:new Date().toISOString()},
+        event:{name:"Cousinades 2025",date:"2025-09-21",pricing:{adulte:CONFIG.PRIX_MENU_ADULTE,enfant:CONFIG.PRIX_MENU_ENFANT,vinParPersonne:CONFIG.PRIX_VIN_PAR_PERSONNE,vinParAdultesSeulement:CONFIG.CHARGE_VIN_SUR_ADULTES_SEULEMENT},virementDeadline:CONFIG.DEADLINE_VIREMENT,rib:CONFIG.RIB_DETAILS},
+        contact:d.contact, reservation:{nbAdults:d.nbAdults,nbKids:d.nbKids,adults:d.adults,kids:d.kids,allergies:d.allergies,vin:d.vin},
+        prices:{adultMenus:fromCents(d.prices.adultMenusCents),kidMenus:fromCents(d.prices.kidMenusCents),wineWhite:fromCents(d.prices.wineWhiteCents),wineRed:fromCents(d.prices.wineRedCents),grandTotal:fromCents(d.prices.grandTotalCents)},
+        recap:d.recap
+      };
+    }
+
+    async function sendToAppsScript(payload){
+      const url = CONFIG.APPS_SCRIPT_URL.trim();
+      if(!url){ return {status:"no-url"}; }
+
+      // Attempt 1: CORS standard JSON
+      try{
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if(res.ok){
+          // Try to read JSON, but don't fail if not readable
+          try{ await res.json(); }catch(_){}
+          return {status:"ok"};
+        }else{
+          throw new Error("HTTP " + res.status);
+        }
+      }catch(err){
+        // Attempt 2: Fallback with no-cors (opaque response)
+        try{
+          await fetch(url, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+          });
+          // If we reach here, the request was sent. Browser won't expose response -> treat as success.
+          return {status:"opaque"};
+        }catch(err2){
+          return {status:"error", error: String(err2)};
+        }
+      }
+    }
+
+    function downloadJSONFile(obj){
+      const refNom = (byId('refNom').value || "resa").toLowerCase().replace(/\\s+/g,'-');
+      const refPrenom = (byId('refPrenom').value || "").toLowerCase().replace(/\\s+/g,'-');
+      const stamp = new Date().toISOString().replace(/[-:]/g,"").slice(0,15);
+      const fname = `cousinades-2025_${refNom}-${refPrenom}_${stamp}.json`;
+      const blob = new Blob([JSON.stringify(obj,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = fname; document.body.appendChild(a); a.click();
+      URL.revokeObjectURL(url); a.remove();
+    }
+
+    async function submitForm(evt){
+      evt.preventDefault();
+      byId('successBox').style.display = 'none';
+      byId('errorBox').style.display = 'none';
+
+      updateSummary();
+      const d = readForm();
+      const invalid = [];
+      if(!d.contact.nom) invalid.push("nom référent");
+      if(!d.contact.prenom) invalid.push("prénom référent");
+      if(!d.contact.tel) invalid.push("téléphone");
+      if(!d.contact.email) invalid.push("email");
+      if(d.nbAdults <= 0) invalid.push("au moins 1 menu adulte");
+      if(d.adults.some(a => !(a.nom && a.prenom && a.entree && a.plat && a.dessert))) invalid.push("compléter les fiches adultes");
+      if(d.kids.some(k => !(k.nom && k.prenom))) invalid.push("compléter les fiches enfants");
+      if(d.allergies.present === 'oui' && !d.allergies.details) invalid.push("préciser les allergies");
+      if(invalid.length){
+        byId('errorBox').textContent = "❌ Merci de corriger : " + invalid.join(", ") + ".";
+        byId('errorBox').style.display = 'block';
+        return;
+      }
+
+      const payload = buildPayload();
+
+      if(CONFIG.APPS_SCRIPT_URL){
+        const result = await sendToAppsScript(payload);
+        if(result.status === "ok"){
+          byId('successBox').textContent = "✅ Réservation enregistrée (réponse serveur OK).";
+          byId('successBox').style.display = 'block';
+          return;
+        }
+        if(result.status === "opaque"){
+          byId('successBox').textContent = "✅ Réservation envoyée. (Réponse non lisible par le navigateur — consultez le Google Sheet pour vérifier l’enregistrement.)";
+          byId('successBox').style.display = 'block';
+          return;
+        }
+        // error -> fall back to local download
+        downloadJSONFile(payload);
+        byId('errorBox').textContent = "⚠️ Impossible d’atteindre l’Apps Script. Le récapitulatif a été téléchargé sur votre appareil.";
+        byId('errorBox').style.display = 'block';
+        return;
+      }else{
+        downloadJSONFile(payload);
+        byId('successBox').textContent = "💾 Fichier téléchargé. Vous pouvez l’envoyer à l’organisateur.";
+        byId('successBox').style.display = 'block';
+      }
+    }
+
+    function init(){
+      rebuildAdults(byId('nbAdults').value);
+      rebuildKids(byId('nbKids').value);
+      updateSummary();
+
+      byId('deadline').textContent = CONFIG.DEADLINE_VIREMENT;
+      byId('rib').textContent = CONFIG.RIB_DETAILS;
+
+      byId('nbAdults').addEventListener('input', e => rebuildAdults(e.target.value));
+      byId('nbKids').addEventListener('input', e => rebuildKids(e.target.value));
+      ['vinBlanc','vinRouge','allergies'].forEach(id => byId(id).addEventListener('change', updateSummary));
+      document.addEventListener('input', e => { if(e.target.closest('.adult-card') || e.target.closest('.child-card')) updateSummary(); });
+
+      byId('resaForm').addEventListener('submit', submitForm);
+      byId('downloadJson').addEventListener('click', () => downloadJSONFile(buildPayload()));
+      byId('printRecap').addEventListener('click', () => window.print());
+    }
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
