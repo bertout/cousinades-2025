@@ -5,181 +5,175 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cousinades 2025 — Inscription & Choix de menu (v3)</title>
   <style>
-    :root{--bg:#f7f7fb;--panel:#ffffff;--ink:#1f2937;--ink-soft:#4b5563;--primary:#2563eb;--primary-ink:#fff;--muted:#e5e7eb;--accent:#dbeafe;--danger:#b91c1c;--success:#065f46}
-    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.4}
-    header{position:sticky;top:0;background:rgba(247,247,251,.9);backdrop-filter:saturate(180%) blur(6px);border-bottom:1px solid var(--muted);z-index:30}
-    header .wrap{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;gap:16px;align-items:center;justify-content:space-between}
-    h1{font-size:clamp(1.2rem,2.2vw,1.6rem);margin:0}
-    main{max-width:1000px;margin:0 auto;padding:24px 16px 120px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:880px){.grid{grid-template-columns:2fr 1.1fr}}
-    .card{background:var(--panel);border:1px solid var(--muted);border-radius:12px;padding:16px}
-    .card h2{margin-top:0;font-size:1.1rem}
-    fieldset{border:1px solid var(--muted);border-radius:10px;padding:12px;margin:12px 0}
-    legend{padding:0 8px}
-    label{display:block;font-weight:600;margin:.4rem 0 .2rem}
-    input[type="text"],input[type="tel"],input[type="email"],input[type="number"],select,textarea{width:100%;padding:10px;border:1px solid var(--muted);border-radius:8px;background:#fff;color:var(--ink);font-size:1rem}
-    input[type="number"]{max-width:180px}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .row > *{flex:1 1 180px}
-    .muted{color:var(--ink-soft);font-size:.95rem}
-    .adult-card,.child-card{border:1px solid var(--muted);border-radius:10px;padding:12px;margin-bottom:12px;background:#fbfdff}
-    .adult-card h4,.child-card h4{margin:.2rem 0 .6rem}
-    .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .btn{display:inline-flex;gap:8px;align-items:center;justify-content:center;border:1px solid var(--primary);background:var(--primary);color:var(--primary-ink);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;text-decoration:none}
-    .btn.secondary{background:#fff;color:var(--primary);border-color:var(--primary)}
-    .btn.ghost{background:#fff;color:var(--ink);border-color:var(--muted)}
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    .pill{display:inline-block;background:var(--accent);border:1px solid #bfdbfe;color:#1e40af;padding:2px 8px;border-radius:999px;font-size:.9rem}
-    .summary{position:sticky;top:64px;padding:16px;border-radius:12px;border:1px solid var(--muted);background:#fff}
-    .summary h3{margin-top:0}
-    .money{font-variant-numeric:tabular-nums}
-    .line{display:flex;justify-content:space-between;gap:12px;margin:6px 0}
-    .line b{white-space:nowrap}
-    .total{font-size:1.4rem;font-weight:800}
-    .ok{color:var(--success);font-weight:700}
-    .err{color:var(--danger)}
-    .success-box{display:none;border:1px solid #bbf7d0;background:#ecfdf5;color:#064e3b;padding:12px;border-radius:10px;margin-top:12px}
-    .error-box{display:none;border:1px solid #fecaca;background:#fff1f2;color:#7f1d1d;padding:12px;border-radius:10px;margin-top:12px}
+    body { font-family: system-ui, sans-serif; background:#f7f7fb; margin:0; }
+    header { background:#fff; border-bottom:1px solid #ccc; padding:10px 16px; position:sticky; top:0; }
+    h1 { margin:0; font-size:1.2rem; }
+    main { max-width:1000px; margin:0 auto; padding:16px; display:grid; gap:20px; grid-template-columns:2fr 1fr; }
+    .card { background:#fff; border:1px solid #ddd; border-radius:10px; padding:16px; }
+    .row { display:flex; flex-wrap:wrap; gap:12px; }
+    label { font-weight:600; display:block; margin:6px 0 2px; }
+    input, select, textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; }
+    .adult-card,.child-card { border:1px solid #ddd; padding:12px; border-radius:10px; margin-bottom:10px; background:#f9fafb; }
+    .summary { background:#fff; border:1px solid #ddd; border-radius:10px; padding:16px; position:sticky; top:60px; }
+    .btn { padding:10px 14px; border:none; border-radius:6px; cursor:pointer; font-weight:700; }
+    .btn.primary { background:#2563eb; color:#fff; }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed; }
+    .success-box,.error-box { margin-top:12px; padding:10px; border-radius:6px; display:none; }
+    .success-box { background:#ecfdf5; border:1px solid #bbf7d0; color:#065f46; }
+    .error-box { background:#fff1f2; border:1px solid #fecaca; color:#7f1d1d; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <h1>Cousinades 2025 — Inscription & choix de menu</h1>
-      <span class="pill">Événement : 21 septembre 2025</span>
-    </div>
-  </header>
-
-  <main class="grid">
+  <header><h1>Cousinades 2025 — Formulaire v3</h1></header>
+  <main>
     <section class="card">
-      <form id="resaForm" novalidate>
-        <h2>1) Coordonnées</h2>
-        <fieldset>
-          <legend>Contact référent</legend>
-          <div class="row">
-            <div><label>Nom</label><input id="refNom" required></div>
-            <div><label>Prénom</label><input id="refPrenom" required></div>
-          </div>
-          <div class="row">
-            <div><label>Téléphone</label><input id="refTel" required></div>
-            <div><label>Email</label><input id="refEmail" type="email" required></div>
-          </div>
-        </fieldset>
-
-        <h2>2) Convives & menus</h2>
-        <fieldset>
-          <legend>Menus adultes (52€)</legend>
-          <label>Nombre</label><input id="nbAdults" type="number" min="1" value="1">
-          <div id="adultList"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Menus enfants (19€)</legend>
-          <label>Nombre</label><input id="nbKids" type="number" min="0" value="0">
-          <div id="childList"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Allergies</legend>
-          <select id="allergies"><option value="non">Non</option><option value="oui">Oui</option></select>
-          <textarea id="allergiesTexte" placeholder="Si oui, précisez…"></textarea>
-        </fieldset>
-
-        <fieldset>
-          <legend>Paiement</legend>
-          <p>Merci d’effectuer le virement avant le <b>31 août 2025</b> :</p>
-          <pre style="font-size:.9rem;white-space:pre-wrap">
-Titulaire : MME EMILIE BERTOUT - ROUSSEAU
-RIB : 30003 01890 00050257840 02
-IBAN : FR76 3000 3018 9000 0502 5784 002
-Domiciliation : 19 CRS VALMY, 92800 PUTEAUX
-BIC : SOGEFRPP
-          </pre>
-        </fieldset>
-
-        <div class="controls">
-          <button type="submit" id="submitBtn" class="btn">Envoyer</button>
+      <form id="resaForm">
+        <h2>Coordonnées</h2>
+        <div class="row">
+          <div style="flex:1"><label>Nom</label><input id="refNom" required></div>
+          <div style="flex:1"><label>Prénom</label><input id="refPrenom" required></div>
         </div>
+        <div class="row">
+          <div style="flex:1"><label>Email</label><input id="refEmail" type="email" required></div>
+          <div style="flex:1"><label>Téléphone</label><input id="refTel" required></div>
+        </div>
+
+        <h2>Menus adultes</h2>
+        <label>Nombre</label>
+        <input id="nbAdults" type="number" value="1" min="0" max="50">
+        <div id="adultList"></div>
+
+        <h2>Menus enfants</h2>
+        <label>Nombre</label>
+        <input id="nbKids" type="number" value="0" min="0" max="50">
+        <div id="childList"></div>
+
+        <h2>Allergies</h2>
+        <select id="allergies"><option value="non">Non</option><option value="oui">Oui</option></select>
+        <textarea id="allergiesTexte" disabled placeholder="Précisez les allergies"></textarea>
+
+        <p><b>Merci de faire le virement avant le 31 août 2025</b><br>
+        IBAN : FR76 3000 3018 9000 0502 5784 002<br>
+        Titulaire : MME EMILIE BERTOUT - ROUSSEAU</p>
+
+        <button type="submit" class="btn primary">Envoyer la réservation</button>
         <div id="successBox" class="success-box"></div>
         <div id="errorBox" class="error-box"></div>
       </form>
     </section>
 
     <aside class="summary">
-      <h3>Récapitulatif</h3>
-      <div id="recap"></div>
+      <h3>Total</h3>
+      <div><span id="grandTotal">—</span></div>
     </aside>
   </main>
 
   <script>
-        // === CONFIGURATION ===
     const CONFIG = {
       PRIX_MENU_ADULTE: 52,
       PRIX_MENU_ENFANT: 19,
-      PRIX_VIN_PAR_PERSONNE: 7,
-      CHARGE_VIN_SUR_ADULTES_SEULEMENT: true,
       DEADLINE_VIREMENT: "31 août 2025",
-      RIB_DETAILS: "Titulaire : MME EMILIE BERTOUT - ROUSSEAU IBAN : FR76 3000 3018 9000 0502 5784 002 Domiciliation : 19 CRS VALMY, 92800 PUTEAUX, BIC : SOGEFRPP.",
-      APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwWQUGqIUbA0rZt59N1tLGKoZpL78YQDC8EHH-rclwBjFbuQW6il4WXUTUz7ZeV-YStPA/exec" // <-- COLLER ICI l'URL de votre déploiement Apps Script
+      RIB_DETAILS: "FR76 3000 3018 9000 0502 5784 002",
+      APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz32JoIHo9cijnITf4GXsfIHixIOnPluxXbXFLzPG25V7mZ1ybFVwMSBoC5xRWuHUUL6A/exec"
     };
-    const entreeOptions=["Tarte fine tomate chèvre olive","Flan saumon courgette"];
-    const platOptions=["Dos de cabillaud pesto rouge","Pavé de veau sauce poivre"];
-    const dessertOptions=["Tarte citron","Mi-cuit chocolat"];
-    const vins=["","blanc","rouge","blanc+rouge"];
-    const prixAdulte=52, prixEnfant=19, prixVin=7;
 
-    function adultCard(i){
-      return `<div class="adult-card">
+    const entreeOptions = [
+      "Tarte fine tomate chèvre olive",
+      "Flan saumon courgette crème aneth"
+    ];
+    const platOptions = [
+      "Dos de cabillaud pesto rouge",
+      "Pavé de veau sauce poivre"
+    ];
+    const dessertOptions = [
+      "Tarte citron vert",
+      "Mi-cuit chocolat crème anglaise"
+    ];
+    const vinOptions = ["Aucun", "Vin blanc", "Vin rouge"];
+
+    const byId = id => document.getElementById(id);
+
+    function adultCardTemplate(i){
+      return `<div class="adult-card" data-index="${i}">
         <h4>Adulte #${i+1}</h4>
-        <input placeholder="Nom" name="a${i}Nom" required>
-        <input placeholder="Prénom" name="a${i}Prenom" required>
-        <select name="a${i}Entree">${entreeOptions.map(v=>`<option>${v}</option>`).join("")}</select>
-        <select name="a${i}Plat">${platOptions.map(v=>`<option>${v}</option>`).join("")}</select>
-        <select name="a${i}Dessert">${dessertOptions.map(v=>`<option>${v}</option>`).join("")}</select>
-        <label>Vin</label><select name="a${i}Vin">${vins.map(v=>`<option>${v}</option>`).join("")}</select>
+        <div class="row">
+          <div><label>Nom</label><input name="a_nom"></div>
+          <div><label>Prénom</label><input name="a_prenom"></div>
+        </div>
+        <div class="row">
+          <div><label>Entrée</label><select name="a_entree">${entreeOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
+          <div><label>Plat</label><select name="a_plat">${platOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
+          <div><label>Dessert</label><select name="a_dessert">${dessertOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
+        </div>
+        <div><label>Vin</label><select name="a_vin">${vinOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
       </div>`;
     }
-    function childCard(i){
-      return `<div class="child-card">
+    function childCardTemplate(i){
+      return `<div class="child-card" data-index="${i}">
         <h4>Enfant #${i+1}</h4>
-        <input placeholder="Nom" required>
-        <input placeholder="Prénom" required>
+        <div class="row">
+          <div><label>Nom</label><input name="k_nom"></div>
+          <div><label>Prénom</label><input name="k_prenom"></div>
+        </div>
       </div>`;
     }
-    function rebuild(){
-      const na=+document.getElementById("nbAdults").value;
-      const nk=+document.getElementById("nbKids").value;
-      document.getElementById("adultList").innerHTML=Array.from({length:na},(_,i)=>adultCard(i)).join("");
-      document.getElementById("childList").innerHTML=Array.from({length:nk},(_,i)=>childCard(i)).join("");
+
+    function rebuildAdults(n){
+      const wrap = byId("adultList"); wrap.innerHTML="";
+      for(let i=0;i<n;i++) wrap.insertAdjacentHTML("beforeend", adultCardTemplate(i));
     }
-    function calc(){
-      const na=+document.getElementById("nbAdults").value;
-      const nk=+document.getElementById("nbKids").value;
-      let total=na*prixAdulte+nk*prixEnfant;
-      let vinsCount={blanc:0,rouge:0};
-      document.querySelectorAll(".adult-card select[name$='Vin']").forEach(sel=>{
-        if(sel.value==="blanc"){ total+=prixVin; vinsCount.blanc++; }
-        if(sel.value==="rouge"){ total+=prixVin; vinsCount.rouge++; }
-        if(sel.value==="blanc+rouge"){ total+=prixVin*2; vinsCount.blanc++; vinsCount.rouge++; }
-      });
-      document.getElementById("recap").textContent=`Adultes: ${na}, Enfants: ${nk}, Vin: ${vinsCount.blanc} blanc, ${vinsCount.rouge} rouge, Total: ${total} €`;
+    function rebuildKids(n){
+      const wrap = byId("childList"); wrap.innerHTML="";
+      for(let i=0;i<n;i++) wrap.insertAdjacentHTML("beforeend", childCardTemplate(i));
     }
-    async function submitForm(e){
-      e.preventDefault();
-      const btn=document.getElementById("submitBtn");
-      btn.disabled=true; btn.textContent="Envoi en cours…";
-      setTimeout(()=>{
-        const ref="REF-"+Math.floor(Math.random()*1e6);
-        document.getElementById("successBox").style.display="block";
-        document.getElementById("successBox").textContent="✅ Envoyé ! Référence: "+ref;
-        btn.textContent="Envoyé ✅"; },1500);
+
+    function readForm(){
+      const nbAdults = parseInt(byId("nbAdults").value)||0;
+      const nbKids = parseInt(byId("nbKids").value)||0;
+      const adults = [...document.querySelectorAll(".adult-card")].map(card=>({
+        nom: card.querySelector("[name='a_nom']").value,
+        prenom: card.querySelector("[name='a_prenom']").value,
+        entree: card.querySelector("[name='a_entree']").value,
+        plat: card.querySelector("[name='a_plat']").value,
+        dessert: card.querySelector("[name='a_dessert']").value,
+        vin: card.querySelector("[name='a_vin']").value
+      }));
+      const kids = [...document.querySelectorAll(".child-card")].map(card=>({
+        nom: card.querySelector("[name='k_nom']").value,
+        prenom: card.querySelector("[name='k_prenom']").value
+      }));
+      const total = nbAdults*CONFIG.PRIX_MENU_ADULTE + nbKids*CONFIG.PRIX_MENU_ENFANT;
+      return {
+        contact:{nom:byId("refNom").value, prenom:byId("refPrenom").value, email:byId("refEmail").value, tel:byId("refTel").value},
+        reservation:{nbAdults, nbKids, adults, kids, allergies:{present:byId("allergies").value, details:byId("allergiesTexte").value}},
+        event:{virementDeadline:CONFIG.DEADLINE_VIREMENT, rib:CONFIG.RIB_DETAILS},
+        prices:{grandTotal: total}
+      };
     }
-    document.getElementById("nbAdults").addEventListener("input",()=>{rebuild();calc();});
-    document.getElementById("nbKids").addEventListener("input",()=>{rebuild();calc();});
-    document.addEventListener("input",calc);
-    document.getElementById("resaForm").addEventListener("submit",submitForm);
-    rebuild();calc();
+
+    async function submitForm(evt){
+      evt.preventDefault();
+      const btn = evt.target.querySelector("button[type=submit]");
+      btn.disabled = true; btn.textContent = "Envoi...";
+      const payload = readForm();
+      try {
+        await fetch(CONFIG.APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify(payload)});
+        byId("successBox").textContent = "✅ Réservation envoyée.";
+        byId("successBox").style.display="block";
+      } catch(e){
+        byId("errorBox").textContent = "❌ Erreur d'envoi.";
+        byId("errorBox").style.display="block";
+      }
+    }
+
+    function init(){
+      rebuildAdults(byId("nbAdults").value);
+      rebuildKids(byId("nbKids").value);
+      byId("nbAdults").addEventListener("input", e=>rebuildAdults(e.target.value));
+      byId("nbKids").addEventListener("input", e=>rebuildKids(e.target.value));
+      byId("resaForm").addEventListener("submit", submitForm);
+    }
+    document.addEventListener("DOMContentLoaded", init);
   </script>
 </body>
 </html>
