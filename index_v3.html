@@ -5,19 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cousinades 2025 — Formulaire v3</title>
   <style>
-    body { font-family: system-ui, sans-serif; background:#f7f7fb; margin:0; }
-    header { background:#fff; border-bottom:1px solid #e5e7eb; padding:12px 16px; position:sticky; top:0; }
-    h1 { margin:0; font-size:1.2rem; }
-    main { max-width:1000px; margin:0 auto; padding:16px; display:grid; gap:20px; grid-template-columns:2fr 1fr; }
-    .card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; padding:16px; }
-    .row { display:flex; flex-wrap:wrap; gap:12px; }
-    label { font-weight:600; display:block; margin:6px 0 4px; }
-    input, select, textarea { width:100%; padding:10px; border:1px solid #ddd; border-radius:8px; }
-    aside { background:#fff; border:1px solid #ddd; border-radius:12px; padding:16px; position:sticky; top:80px; height:fit-content; }
-    .line { display:flex; justify-content:space-between; margin:6px 0; }
-    .total { font-weight:bold; font-size:1.2rem; }
-    .success-box {display:none; background:#ecfdf5; border:1px solid #bbf7d0; padding:10px; border-radius:8px; color:#065f46; margin-top:12px;}
-    .error-box {display:none; background:#fff1f2; border:1px solid #fecaca; padding:10px; border-radius:8px; color:#991b1b; margin-top:12px;}
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f9fafb; }
+    header { background: #2563eb; color: white; padding: 1rem; }
+    main { display: flex; gap: 2rem; padding: 1rem; max-width: 1200px; margin: auto; }
+    form { flex: 2; background: white; padding: 1rem; border-radius: 8px; }
+    aside { flex: 1; background: #fff; border: 1px solid #ddd; padding: 1rem; border-radius: 8px; position: sticky; top: 1rem; height: fit-content; }
+    h1 { margin: 0; font-size: 1.5rem; }
+    fieldset { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; border-radius: 6px; }
+    legend { font-weight: bold; }
+    label { display: block; margin-top: 0.5rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 0.2rem; border: 1px solid #ccc; border-radius: 4px; }
+    button { background: #2563eb; color: white; padding: 0.6rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .line { display: flex; justify-content: space-between; margin: 0.5rem 0; }
+    .total { font-size: 1.2rem; font-weight: bold; }
+    .rib-box { margin-top: 1rem; font-size: 0.9rem; background: #f1f5f9; padding: 0.8rem; border-radius: 6px; }
+    .rib-box b { display: block; margin-top: 0.4rem; }
+    .success { color: green; margin-top: 0.5rem; display: none; }
+    .error { color: red; margin-top: 0.5rem; display: none; }
   </style>
 </head>
 <body>
@@ -25,42 +29,74 @@
     <h1>Cousinades 2025 — Formulaire v3</h1>
   </header>
   <main>
-    <section class="card">
-      <form id="resaForm">
-        <h2>Coordonnées</h2>
-        <div class="row">
-          <div><label>Nom</label><input id="refNom" required></div>
-          <div><label>Prénom</label><input id="refPrenom" required></div>
-        </div>
-        <div class="row">
-          <div><label>Téléphone</label><input id="refTel" required></div>
-          <div><label>Email</label><input id="refEmail" type="email" required></div>
-        </div>
-        <h2>Convives</h2>
-        <div class="row">
-          <div><label>Adultes (52€)</label><input id="nbAdults" type="number" min="0" value="1"></div>
-          <div><label>Enfants (19€)</label><input id="nbKids" type="number" min="0" value="0"></div>
-        </div>
-        <h2>Vin (7€/pers)</h2>
-        <div class="row">
-          <div><label>Vin blanc</label><select id="vinBlanc"><option value="non">Non</option><option value="oui">Oui</option></select></div>
-          <div><label>Vin rouge</label><select id="vinRouge"><option value="non">Non</option><option value="oui">Oui</option></select></div>
-        </div>
-        <button type="submit">Envoyer</button>
-        <div id="successBox" class="success-box"></div>
-        <div id="errorBox" class="error-box"></div>
-      </form>
-    </section>
+    <form id="resaForm">
+      <fieldset>
+        <legend>Contact</legend>
+        <label>Nom <input type="text" id="refNom" required></label>
+        <label>Prénom <input type="text" id="refPrenom" required></label>
+        <label>Téléphone <input type="tel" id="refTel" required></label>
+        <label>Email <input type="email" id="refEmail" required></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Menus adultes</legend>
+        <label>Nombre d'adultes <input type="number" id="nbAdults" min="1" value="1"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Menus enfants</legend>
+        <label>Nombre d'enfants <input type="number" id="nbKids" min="0" value="0"></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Boissons</legend>
+        <label>Vin blanc 
+          <select id="vinBlanc">
+            <option value="non">Non</option>
+            <option value="oui">Oui</option>
+          </select>
+        </label>
+        <label>Vin rouge 
+          <select id="vinRouge">
+            <option value="non">Non</option>
+            <option value="oui">Oui</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Allergies</legend>
+        <label>Présence d'allergies ? 
+          <select id="allergies">
+            <option value="non">Non</option>
+            <option value="oui">Oui</option>
+          </select>
+        </label>
+        <textarea id="allergiesTexte" placeholder="Précisez les allergies" disabled></textarea>
+      </fieldset>
+
+      <button type="submit">Envoyer</button>
+      <div id="success" class="success">✅ Réservation enregistrée</div>
+      <div id="error" class="error">❌ Erreur d'envoi</div>
+    </form>
+
     <aside>
-      <h3>Récapitulatif & total</h3>
+      <h2>Récapitulatif</h2>
       <div class="line"><span>Menus adultes</span><b id="adultTotal">—</b></div>
       <div class="line"><span>Menus enfants</span><b id="kidTotal">—</b></div>
       <div class="line"><span>Vin blanc</span><b id="whiteWine">—</b></div>
       <div class="line"><span>Vin rouge</span><b id="redWine">—</b></div>
-      <div class="line"><span>Consommateurs vin</span><b id="consumers">—</b></div>
-      <div class="line"><span>Bouteilles (blanc/rouge)</span><b id="bottles">—</b></div>
-      <hr>
+      <div class="line"><span>Bouteilles</span><b id="bottles">—</b></div>
       <div class="line total"><span>Total</span><b id="grandTotal">—</b></div>
+
+      <div class="rib-box">
+        <p>💶 Merci d’effectuer le virement <b>avant le 31 août 2025</b> :</p>
+        <b>MME EMILIE BERTOUT - ROUSSEAU</b>
+        <b>RIB: 30003 01890 00050257840 02</b>
+        <b>IBAN: FR76 3000 3018 9000 0502 5784 002</b>
+        <b>BIC: SOGEFRPP</b>
+        <b>Domiciliation: 19 CRS VALMY, 92800 PUTEAUX</b>
+      </div>
     </aside>
   </main>
 
@@ -68,24 +104,23 @@
     const CONFIG = {
       PRIX_MENU_ADULTE: 52,
       PRIX_MENU_ENFANT: 19,
-      PRIX_VIN_PAR_PERSONNE: 7
+      PRIX_VIN_PAR_PERSONNE: 7,
       CHARGE_VIN_SUR_ADULTES_SEULEMENT: true,
-      DEADLINE_VIREMENT: "31 août 2025",
-      RIB_DETAILS: "Voir RIB en fin de formulaire.",
-      APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz32JoIHo9cijnITf4GXsfIHixIOnPluxXbXFLzPG25V7mZ1ybFVwMSBoC5xRWuHUUL6A/exec" // <-- COLLER ICI l'URL de votre déploiement Apps Script
+      APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz32JoIHo9cijnITf4GXsfIHixIOnPluxXbXFLzPG25V7mZ1ybFVwMSBoC5xRWuHUUL6A/exec"
     };
-    const fmtEUR = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
+
+    const fmtEUR = new Intl.NumberFormat('fr-FR', { style:'currency', currency:'EUR' });
     const byId = id => document.getElementById(id);
 
     function updateSummary(){
-      const nbAdults = Number(byId('nbAdults').value||0);
-      const nbKids = Number(byId('nbKids').value||0);
-      const vinBlanc = byId('vinBlanc').value==='oui';
-      const vinRouge = byId('vinRouge').value==='oui';
+      const nbAdults = parseInt(byId('nbAdults').value) || 0;
+      const nbKids = parseInt(byId('nbKids').value) || 0;
+      const vinBlanc = byId('vinBlanc').value === 'oui';
+      const vinRouge = byId('vinRouge').value === 'oui';
 
       const adultMenus = nbAdults * CONFIG.PRIX_MENU_ADULTE;
       const kidMenus = nbKids * CONFIG.PRIX_MENU_ENFANT;
-      const consumers = nbAdults; // vin pour adultes uniquement
+      const consumers = CONFIG.CHARGE_VIN_SUR_ADULTES_SEULEMENT ? nbAdults : (nbAdults + nbKids);
       const wineWhite = vinBlanc ? consumers * CONFIG.PRIX_VIN_PAR_PERSONNE : 0;
       const wineRed = vinRouge ? consumers * CONFIG.PRIX_VIN_PAR_PERSONNE : 0;
       const bottlesWhite = vinBlanc ? Math.ceil(consumers/3) : 0;
@@ -94,25 +129,22 @@
 
       byId('adultTotal').textContent = fmtEUR.format(adultMenus);
       byId('kidTotal').textContent = fmtEUR.format(kidMenus);
-      byId('whiteWine').textContent = wineWhite?fmtEUR.format(wineWhite):'—';
-      byId('redWine').textContent = wineRed?fmtEUR.format(wineRed):'—';
-      byId('consumers').textContent = consumers||'—';
-      byId('bottles').textContent = bottlesWhite+'/'+bottlesRed;
+      byId('whiteWine').textContent = wineWhite ? fmtEUR.format(wineWhite) : "—";
+      byId('redWine').textContent = wineRed ? fmtEUR.format(wineRed) : "—";
+      byId('bottles').textContent = `${bottlesWhite} / ${bottlesRed}`;
       byId('grandTotal').textContent = fmtEUR.format(total);
     }
 
-    ['nbAdults','nbKids','vinBlanc','vinRouge'].forEach(id=>{
+    ['nbAdults','nbKids','vinBlanc','vinRouge'].forEach(id => {
       byId(id).addEventListener('input', updateSummary);
       byId(id).addEventListener('change', updateSummary);
     });
-    document.addEventListener('DOMContentLoaded', updateSummary);
 
-    document.getElementById('resaForm').addEventListener('submit', async e=>{
-      e.preventDefault();
-      updateSummary();
-      byId('successBox').style.display='block';
-      byId('successBox').textContent="✅ Réservation envoyée";
+    byId('allergies').addEventListener('change', e => {
+      byId('allergiesTexte').disabled = (e.target.value !== 'oui');
     });
+
+    updateSummary();
   </script>
 </body>
 </html>
