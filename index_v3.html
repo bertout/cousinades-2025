@@ -236,8 +236,7 @@ function updateSummary() {
       byId("nbAdults").addEventListener("input", e=>rebuildAdults(e.target.value));
       byId("nbKids").addEventListener("input", e=>rebuildKids(e.target.value));
       byId("resaForm").addEventListener("submit", submitForm);
-    }
-    document.addEventListener("DOMContentLoaded", init);
+          document.addEventListener("DOMContentLoaded", init);
           // Après avoir construit la liste des adultes/enfants :
 document.getElementById('nbAdults').addEventListener('input', e => { rebuildAdults(+e.target.value); updateSummary(); });
 document.getElementById('nbKids').addEventListener('input',   e => { rebuildKids(+e.target.value);   updateSummary(); });
@@ -246,6 +245,7 @@ document.getElementById('nbKids').addEventListener('input',   e => { rebuildKids
 document.addEventListener('input', (e) => {
   if (e.target.closest('.adult-card') || e.target.closest('.child-card') || e.target.id === 'allergies') {
     updateSummary();
+    }
   }
 });
 
