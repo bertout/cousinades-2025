@@ -5,252 +5,147 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cousinades 2025 — Inscription & Choix de menu (v3)</title>
   <style>
-    body { font-family: system-ui, sans-serif; background:#f7f7fb; margin:0; }
-    header { background:#fff; border-bottom:1px solid #ccc; padding:10px 16px; position:sticky; top:0; }
+    :root {
+      --bg:#f7f7fb; --panel:#fff; --ink:#1f2937; --muted:#e5e7eb;
+      --primary:#2563eb; --danger:#b91c1c; --success:#065f46
+    }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto; background:var(--bg); }
+    header { background:#fff; border-bottom:1px solid var(--muted); padding:12px 16px; position:sticky; top:0; z-index:10; }
     h1 { margin:0; font-size:1.2rem; }
     main { max-width:1000px; margin:0 auto; padding:16px; display:grid; gap:20px; grid-template-columns:2fr 1fr; }
-    .card { background:#fff; border:1px solid #ddd; border-radius:10px; padding:16px; }
+    .card { background:var(--panel); border:1px solid var(--muted); border-radius:12px; padding:16px; }
     .row { display:flex; flex-wrap:wrap; gap:12px; }
-    label { font-weight:600; display:block; margin:6px 0 2px; }
-    input, select, textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; }
-    .adult-card,.child-card { border:1px solid #ddd; padding:12px; border-radius:10px; margin-bottom:10px; background:#f9fafb; }
-    .summary { background:#fff; border:1px solid #ddd; border-radius:10px; padding:16px; position:sticky; top:60px; }
-    .btn { padding:10px 14px; border:none; border-radius:6px; cursor:pointer; font-weight:700; }
-    .btn.primary { background:#2563eb; color:#fff; }
-    .btn[disabled]{ opacity:.6; cursor:not-allowed; }
-    .success-box,.error-box { margin-top:12px; padding:10px; border-radius:6px; display:none; }
-    .success-box { background:#ecfdf5; border:1px solid #bbf7d0; color:#065f46; }
-    .error-box { background:#fff1f2; border:1px solid #fecaca; color:#7f1d1d; }
+    label { font-weight:600; margin:6px 0 4px; display:block; }
+    input, select, textarea { width:100%; padding:8px; border:1px solid var(--muted); border-radius:6px; }
+    .summary { position:sticky; top:70px; background:#fff; border:1px solid var(--muted); border-radius:12px; padding:16px; }
+    .line { display:flex; justify-content:space-between; margin:6px 0; }
+    .total { font-size:1.3rem; font-weight:700; }
+    .btn { background:var(--primary); color:#fff; padding:10px 14px; border:none; border-radius:8px; cursor:pointer; font-weight:600; }
+    .success { display:none; color:var(--success); margin-top:8px; }
+    .error { display:none; color:var(--danger); margin-top:8px; }
   </style>
 </head>
 <body>
-  <header><h1>Cousinades 2025 — Formulaire v3</h1></header>
-  <main>
-    <section class="card">
-      <form id="resaForm">
-        <h2>Coordonnées</h2>
-        <div class="row">
-          <div style="flex:1"><label>Nom</label><input id="refNom" required></div>
-          <div style="flex:1"><label>Prénom</label><input id="refPrenom" required></div>
-        </div>
-        <div class="row">
-          <div style="flex:1"><label>Email</label><input id="refEmail" type="email" required></div>
-          <div style="flex:1"><label>Téléphone</label><input id="refTel" required></div>
-        </div>
+<header>
+  <h1>Cousinades 2025 — Formulaire v3</h1>
+</header>
 
-        <h2>Menus adultes</h2>
-        <label>Nombre</label>
-        <input id="nbAdults" type="number" value="1" min="0" max="50">
-        <div id="adultList"></div>
+<main>
+  <section class="card">
+    <form id="resaForm">
+      <h2>Coordonnées</h2>
+      <div class="row">
+        <div><label>Nom</label><input type="text" id="refNom" required></div>
+        <div><label>Prénom</label><input type="text" id="refPrenom" required></div>
+      </div>
+      <div class="row">
+        <div><label>Email</label><input type="email" id="refEmail" required></div>
+        <div><label>Téléphone</label><input type="tel" id="refTel" required></div>
+      </div>
 
-        <h2>Menus enfants</h2>
-        <label>Nombre</label>
-        <input id="nbKids" type="number" value="0" min="0" max="50">
-        <div id="childList"></div>
+      <h2>Convives</h2>
+      <div class="row">
+        <div><label>Nb Adultes</label><input type="number" id="nbAdults" value="1" min="1"></div>
+        <div><label>Nb Enfants</label><input type="number" id="nbKids" value="0" min="0"></div>
+      </div>
 
-        <h2>Allergies</h2>
-        <select id="allergies"><option value="non">Non</option><option value="oui">Oui</option></select>
-        <textarea id="allergiesTexte" disabled placeholder="Précisez les allergies"></textarea>
+      <h2>Vin</h2>
+      <div class="row">
+        <div><label>Vin blanc</label><select id="vinBlanc"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+        <div><label>Vin rouge</label><select id="vinRouge"><option value="non">Non</option><option value="oui">Oui</option></select></div>
+      </div>
 
-        <p><b>Merci de faire le virement avant le 31 août 2025</b><br>
-        IBAN : FR76 3000 3018 9000 0502 5784 002<br>
-        Titulaire : MME EMILIE BERTOUT - ROUSSEAU</p>
+      <h2>Allergies</h2>
+      <select id="allergies">
+        <option value="non">Non</option>
+        <option value="oui">Oui</option>
+      </select>
+      <textarea id="allergiesTexte" placeholder="Précisez..." disabled></textarea>
 
-        <button type="submit" class="btn primary">Envoyer la réservation</button>
-        <div id="successBox" class="success-box"></div>
-        <div id="errorBox" class="error-box"></div>
-      </form>
-    </section>
+      <button type="submit" class="btn">Envoyer</button>
+      <div id="successBox" class="success">✅ Réservation envoyée</div>
+      <div id="errorBox" class="error">❌ Erreur d’envoi</div>
+    </form>
+  </section>
 
-    <aside class="summary">
-  <h3>Récapitulatif & total</h3>
-  <div class="line"><span>Menus adultes</span><b id="adultTotal">—</b></div>
-  <div class="line"><span>Menus enfants</span><b id="kidTotal">—</b></div>
-  <div class="line"><span>Vin blanc</span><b id="whiteWine">—</b></div>
-  <div class="line"><span>Vin rouge</span><b id="redWine">—</b></div>
-  <div class="line"><span>Consommateurs vin (blanc / rouge)</span><b id="wineConsumers">—</b></div>
-  <div class="line"><span>Bouteilles (blanc / rouge)</span><b id="bottles">—</b></div>
-  <hr>
-  <div class="line" style="font-size:1.2rem;font-weight:800">
-    <span>Total</span><b id="grandTotal">—</b>
-  </div>
-  </main>
+  <aside class="summary">
+    <h3>Récapitulatif</h3>
+    <div class="line"><span>Adultes</span><b id="adultTotal">—</b></div>
+    <div class="line"><span>Enfants</span><b id="kidTotal">—</b></div>
+    <div class="line"><span>Vin blanc</span><b id="whiteWine">—</b></div>
+    <div class="line"><span>Vin rouge</span><b id="redWine">—</b></div>
+    <hr>
+    <div class="line total"><span>Total</span><b id="grandTotal">—</b></div>
+  </aside>
+</main>
 
-  <script>
-    const CONFIG = {
-      PRIX_MENU_ADULTE: 52,
-      PRIX_MENU_ENFANT: 19,
-      DEADLINE_VIREMENT: "31 août 2025",
-      RIB_DETAILS: "FR76 3000 3018 9000 0502 5784 002",
-      APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz32JoIHo9cijnITf4GXsfIHixIOnPluxXbXFLzPG25V7mZ1ybFVwMSBoC5xRWuHUUL6A/exec"
-    };
-
-    const entreeOptions = [
-      "Tarte fine tomate chèvre olive",
-      "Flan saumon courgette crème aneth"
-    ];
-    const platOptions = [
-      "Dos de cabillaud pesto rouge",
-      "Pavé de veau sauce poivre"
-    ];
-    const dessertOptions = [
-      "Tarte citron vert",
-      "Mi-cuit chocolat crème anglaise"
-    ];
-    const vinOptions = ["Aucun", "Vin blanc", "Vin rouge"];
-
-    const byId = id => document.getElementById(id);
+<script>
+const CONFIG = {
+  PRIX_MENU_ADULTE: 52,
+  PRIX_MENU_ENFANT: 19,
+  PRIX_VIN_PAR_PERSONNE: 7,
+  APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbz32JoIHo9cijnITf4GXsfIHixIOnPluxXbXFLzPG25V7mZ1ybFVwMSBoC5xRWuHUUL6A/exec"
+};
 
 const fmtEUR = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
+const byId = id => document.getElementById(id);
 
-function computeTotals() {
-  const nbAdults = +document.getElementById('nbAdults').value || 0;
-  const nbKids   = +document.getElementById('nbKids').value || 0;
+function updateSummary(){
+  const nbA = +byId("nbAdults").value||0;
+  const nbK = +byId("nbKids").value||0;
+  const vinBlanc = byId("vinBlanc").value==="oui";
+  const vinRouge = byId("vinRouge").value==="oui";
+  const consumers = nbA;
+  const vinBlancC = vinBlanc ? consumers*CONFIG.PRIX_VIN_PAR_PERSONNE : 0;
+  const vinRougeC = vinRouge ? consumers*CONFIG.PRIX_VIN_PAR_PERSONNE : 0;
 
-  // Prix menus
-  const adultMenus = nbAdults * CONFIG.PRIX_MENU_ADULTE;
-  const kidMenus   = nbKids   * CONFIG.PRIX_MENU_ENFANT;
+  const adultC = nbA*CONFIG.PRIX_MENU_ADULTE;
+  const kidC = nbK*CONFIG.PRIX_MENU_ENFANT;
+  const total = adultC+kidC+vinBlancC+vinRougeC;
 
-  // Comptage vin par adulte
-  let consumersWhite = 0, consumersRed = 0;
-  document.querySelectorAll('.adult-card').forEach(card => {
-    const vin = card.querySelector('[name="a_vin"]')?.value || card.querySelector('select[name^="adults"] [name$="[vin]"]')?.value;
-    // Si ta v3 a les valeurs "blanc/rouge/blanc+rouge/aucun"
-    if (vin === 'blanc') consumersWhite++;
-    if (vin === 'rouge') consumersRed++;
-    if (vin === 'blanc+rouge') { consumersWhite++; consumersRed++; }
-    // Si elle a "Vin blanc / Vin rouge / Aucun", adapte ici :
-    if (vin === 'Vin blanc') consumersWhite++;
-    if (vin === 'Vin rouge') consumersRed++;
-  });
-
-  // Prix vin (7€ par consommateur et par type)
-  const wineWhite = consumersWhite * CONFIG.PRIX_VIN_PAR_PERSONNE;
-  const wineRed   = consumersRed   * CONFIG.PRIX_VIN_PAR_PERSONNE;
-
-  // Bouteilles (1 pour 3 pers)
-  const bottlesWhite = consumersWhite ? Math.ceil(consumersWhite/3) : 0;
-  const bottlesRed   = consumersRed   ? Math.ceil(consumersRed/3)   : 0;
-
-  const grandTotal = adultMenus + kidMenus + wineWhite + wineRed;
-
-  // Mise à jour UI
-  document.getElementById('adultTotal').textContent = fmtEUR.format(adultMenus);
-  document.getElementById('kidTotal').textContent   = fmtEUR.format(kidMenus);
-  document.getElementById('whiteWine').textContent  = consumersWhite ? fmtEUR.format(wineWhite) : '—';
-  document.getElementById('redWine').textContent    = consumersRed   ? fmtEUR.format(wineRed)   : '—';
-  document.getElementById('wineConsumers').textContent =
-    (consumersWhite || consumersRed) ? `${consumersWhite} / ${consumersRed}` : '—';
-  document.getElementById('bottles').textContent =
-    (bottlesWhite || bottlesRed) ? `${bottlesWhite} / ${bottlesRed}` : '—';
-  document.getElementById('grandTotal').textContent = fmtEUR.format(grandTotal);
-
-  return { adultMenus, kidMenus, wineWhite, wineRed, bottlesWhite, bottlesRed, grandTotal,
-           consumersWhite, consumersRed };
+  byId("adultTotal").textContent=fmtEUR.format(adultC);
+  byId("kidTotal").textContent=fmtEUR.format(kidC);
+  byId("whiteWine").textContent=vinBlanc?fmtEUR.format(vinBlancC):"—";
+  byId("redWine").textContent=vinRouge?fmtEUR.format(vinRougeC):"—";
+  byId("grandTotal").textContent=fmtEUR.format(total);
 }
 
-function updateSummary() {
-  // Active/désactive la zone allergies si tu en as une
-  const sel = document.getElementById('allergies');
-  const txt = document.getElementById('allergiesTexte');
-  if (sel && txt) { txt.disabled = (sel.value !== 'oui'); if (txt.disabled) txt.value = ''; }
-  computeTotals();
-}
-    
-    function adultCardTemplate(i){
-      return `<div class="adult-card" data-index="${i}">
-        <h4>Adulte #${i+1}</h4>
-        <div class="row">
-          <div><label>Nom</label><input name="a_nom"></div>
-          <div><label>Prénom</label><input name="a_prenom"></div>
-        </div>
-        <div class="row">
-          <div><label>Entrée</label><select name="a_entree">${entreeOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
-          <div><label>Plat</label><select name="a_plat">${platOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
-          <div><label>Dessert</label><select name="a_dessert">${dessertOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
-        </div>
-        <div><label>Vin</label><select name="a_vin">${vinOptions.map(v=>`<option>${v}</option>`).join("")}</select></div>
-      </div>`;
-    }
-    function childCardTemplate(i){
-      return `<div class="child-card" data-index="${i}">
-        <h4>Enfant #${i+1}</h4>
-        <div class="row">
-          <div><label>Nom</label><input name="k_nom"></div>
-          <div><label>Prénom</label><input name="k_prenom"></div>
-        </div>
-      </div>`;
-    }
+["nbAdults","nbKids","vinBlanc","vinRouge"].forEach(id=>{
+  byId(id).addEventListener("input",updateSummary);
+  byId(id).addEventListener("change",updateSummary);
+});
 
-    function rebuildAdults(n){
-      const wrap = byId("adultList"); wrap.innerHTML="";
-      for(let i=0;i<n;i++) wrap.insertAdjacentHTML("beforeend", adultCardTemplate(i));
-    }
-    function rebuildKids(n){
-      const wrap = byId("childList"); wrap.innerHTML="";
-      for(let i=0;i<n;i++) wrap.insertAdjacentHTML("beforeend", childCardTemplate(i));
-    }
+byId("allergies").addEventListener("change",()=>{
+  byId("allergiesTexte").disabled = byId("allergies").value!=="oui";
+});
 
-    function readForm(){
-      const nbAdults = parseInt(byId("nbAdults").value)||0;
-      const nbKids = parseInt(byId("nbKids").value)||0;
-      const adults = [...document.querySelectorAll(".adult-card")].map(card=>({
-        nom: card.querySelector("[name='a_nom']").value,
-        prenom: card.querySelector("[name='a_prenom']").value,
-        entree: card.querySelector("[name='a_entree']").value,
-        plat: card.querySelector("[name='a_plat']").value,
-        dessert: card.querySelector("[name='a_dessert']").value,
-        vin: card.querySelector("[name='a_vin']").value
-      }));
-      const kids = [...document.querySelectorAll(".child-card")].map(card=>({
-        nom: card.querySelector("[name='k_nom']").value,
-        prenom: card.querySelector("[name='k_prenom']").value
-      }));
-      const total = nbAdults*CONFIG.PRIX_MENU_ADULTE + nbKids*CONFIG.PRIX_MENU_ENFANT;
-      return {
-        contact:{nom:byId("refNom").value, prenom:byId("refPrenom").value, email:byId("refEmail").value, tel:byId("refTel").value},
-        reservation:{nbAdults, nbKids, adults, kids, allergies:{present:byId("allergies").value, details:byId("allergiesTexte").value}},
-        event:{virementDeadline:CONFIG.DEADLINE_VIREMENT, rib:CONFIG.RIB_DETAILS},
-        prices:{grandTotal: total}
-      };
-    }
+byId("resaForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  byId("successBox").style.display="none";
+  byId("errorBox").style.display="none";
 
-    async function submitForm(evt){
-      evt.preventDefault();
-      const btn = evt.target.querySelector("button[type=submit]");
-      btn.disabled = true; btn.textContent = "Envoi...";
-      const payload = readForm();
-      try {
-        await fetch(CONFIG.APPS_SCRIPT_URL, {method:"POST", body:JSON.stringify(payload)});
-        byId("successBox").textContent = "✅ Réservation envoyée.";
-        byId("successBox").style.display="block";
-      } catch(e){
-        byId("errorBox").textContent = "❌ Erreur d'envoi.";
-        byId("errorBox").style.display="block";
-      }
+  const payload = {
+    contact:{
+      nom:byId("refNom").value, prenom:byId("refPrenom").value,
+      email:byId("refEmail").value, tel:byId("refTel").value
+    },
+    reservation:{
+      nbAdults:+byId("nbAdults").value,
+      nbKids:+byId("nbKids").value,
+      vin:{blanc:byId("vinBlanc").value==="oui",rouge:byId("vinRouge").value==="oui"},
+      allergies:{present:byId("allergies").value,details:byId("allergiesTexte").value}
     }
+  };
 
-    function init(){
-      rebuildAdults(byId("nbAdults").value);
-      rebuildKids(byId("nbKids").value);
-      byId("nbAdults").addEventListener("input", e=>rebuildAdults(e.target.value));
-      byId("nbKids").addEventListener("input", e=>rebuildKids(e.target.value));
-      byId("resaForm").addEventListener("submit", submitForm);
-          document.addEventListener("DOMContentLoaded", init);
-          // Après avoir construit la liste des adultes/enfants :
-document.getElementById('nbAdults').addEventListener('input', e => { rebuildAdults(+e.target.value); updateSummary(); });
-document.getElementById('nbKids').addEventListener('input',   e => { rebuildKids(+e.target.value);   updateSummary(); });
-
-// Recalcule dès qu’on change un champ dans les cartes adultes/enfants
-document.addEventListener('input', (e) => {
-  if (e.target.closest('.adult-card') || e.target.closest('.child-card') || e.target.id === 'allergies') {
-    updateSummary();
-    }
+  try {
+    await fetch(CONFIG.APPS_SCRIPT_URL,{method:"POST",body:JSON.stringify(payload)});
+    byId("successBox").style.display="block";
+  } catch {
+    byId("errorBox").style.display="block";
   }
 });
 
-// Premier calcul au chargement
 updateSummary();
-  </script>
+</script>
 </body>
 </html>
