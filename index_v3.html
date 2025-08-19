@@ -101,6 +101,62 @@
 
     const byId = id => document.getElementById(id);
 
+const fmtEUR = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
+
+function computeTotals() {
+  const nbAdults = +document.getElementById('nbAdults').value || 0;
+  const nbKids   = +document.getElementById('nbKids').value || 0;
+
+  // Prix menus
+  const adultMenus = nbAdults * CONFIG.PRIX_MENU_ADULTE;
+  const kidMenus   = nbKids   * CONFIG.PRIX_MENU_ENFANT;
+
+  // Comptage vin par adulte
+  let consumersWhite = 0, consumersRed = 0;
+  document.querySelectorAll('.adult-card').forEach(card => {
+    const vin = card.querySelector('[name="a_vin"]')?.value || card.querySelector('select[name^="adults"] [name$="[vin]"]')?.value;
+    // Si ta v3 a les valeurs "blanc/rouge/blanc+rouge/aucun"
+    if (vin === 'blanc') consumersWhite++;
+    if (vin === 'rouge') consumersRed++;
+    if (vin === 'blanc+rouge') { consumersWhite++; consumersRed++; }
+    // Si elle a "Vin blanc / Vin rouge / Aucun", adapte ici :
+    if (vin === 'Vin blanc') consumersWhite++;
+    if (vin === 'Vin rouge') consumersRed++;
+  });
+
+  // Prix vin (7€ par consommateur et par type)
+  const wineWhite = consumersWhite * CONFIG.PRIX_VIN_PAR_PERSONNE;
+  const wineRed   = consumersRed   * CONFIG.PRIX_VIN_PAR_PERSONNE;
+
+  // Bouteilles (1 pour 3 pers)
+  const bottlesWhite = consumersWhite ? Math.ceil(consumersWhite/3) : 0;
+  const bottlesRed   = consumersRed   ? Math.ceil(consumersRed/3)   : 0;
+
+  const grandTotal = adultMenus + kidMenus + wineWhite + wineRed;
+
+  // Mise à jour UI
+  document.getElementById('adultTotal').textContent = fmtEUR.format(adultMenus);
+  document.getElementById('kidTotal').textContent   = fmtEUR.format(kidMenus);
+  document.getElementById('whiteWine').textContent  = consumersWhite ? fmtEUR.format(wineWhite) : '—';
+  document.getElementById('redWine').textContent    = consumersRed   ? fmtEUR.format(wineRed)   : '—';
+  document.getElementById('wineConsumers').textContent =
+    (consumersWhite || consumersRed) ? `${consumersWhite} / ${consumersRed}` : '—';
+  document.getElementById('bottles').textContent =
+    (bottlesWhite || bottlesRed) ? `${bottlesWhite} / ${bottlesRed}` : '—';
+  document.getElementById('grandTotal').textContent = fmtEUR.format(grandTotal);
+
+  return { adultMenus, kidMenus, wineWhite, wineRed, bottlesWhite, bottlesRed, grandTotal,
+           consumersWhite, consumersRed };
+}
+
+function updateSummary() {
+  // Active/désactive la zone allergies si tu en as une
+  const sel = document.getElementById('allergies');
+  const txt = document.getElementById('allergiesTexte');
+  if (sel && txt) { txt.disabled = (sel.value !== 'oui'); if (txt.disabled) txt.value = ''; }
+  computeTotals();
+}
+    
     function adultCardTemplate(i){
       return `<div class="adult-card" data-index="${i}">
         <h4>Adulte #${i+1}</h4>
@@ -182,6 +238,19 @@
       byId("resaForm").addEventListener("submit", submitForm);
     }
     document.addEventListener("DOMContentLoaded", init);
+          // Après avoir construit la liste des adultes/enfants :
+document.getElementById('nbAdults').addEventListener('input', e => { rebuildAdults(+e.target.value); updateSummary(); });
+document.getElementById('nbKids').addEventListener('input',   e => { rebuildKids(+e.target.value);   updateSummary(); });
+
+// Recalcule dès qu’on change un champ dans les cartes adultes/enfants
+document.addEventListener('input', (e) => {
+  if (e.target.closest('.adult-card') || e.target.closest('.child-card') || e.target.id === 'allergies') {
+    updateSummary();
+  }
+});
+
+// Premier calcul au chargement
+updateSummary();
   </script>
 </body>
 </html>
