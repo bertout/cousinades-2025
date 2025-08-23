@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cousinades 2025 - Inscription</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #2c5530;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-section h3 {
+            color: #2c5530;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #2c5530;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .number-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .number-input button {
+            background: #2c5530;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .number-input button:hover {
+            background: #1e3d22;
+        }
+
+        .number-input input {
+            width: 80px;
+            text-align: center;
+        }
+
+        .summary {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary h3 {
+            color: #2c5530;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-line.total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #2c5530;
+            border-top: 2px solid #2c5530;
+            margin-top: 15px;
+            padding-top: 15px;
+        }
+
+        .submit-btn {
+            background: #2c5530;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #1e3d22;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .allergies-details {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .allergies-details.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .summary {
+                position: static;
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Cousinades 2025</h1>
+            <p>Inscription et réservation pour notre grand rassemblement familial</p>
+        </div>
+
+        <div class="form-container">
+            <div class="form-content">
+                <form id="cousinadesForm">
+                    <!-- Contact référent -->
+                    <div class="form-section">
+                        <h3>📞 Contact référent</h3>
+                        <div class="form-group">
+                            <label for="nom">Nom *</label>
+                            <input type="text" id="nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom">Prénom *</label>
+                            <input type="text" id="prenom" name="prenom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tel">Téléphone *</label>
+                            <input type="tel" id="tel" name="tel" required>
+                        </div>
+                    </div>
+
+                    <!-- Menus -->
+                    <div class="form-section">
+                        <h3>🍽️ Réservation des menus</h3>
+                        <div class="form-group">
+                            <label>Nombre de menus adultes (52€/personne)</label>
+                            <div class="number-input">
+                                <button type="button" onclick="changeQuantity('adults', -1)">-</button>
+                                <input type="number" id="adults" name="adults" min="0" value="0" readonly>
+                                <button type="button" onclick="changeQuantity('adults', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre de menus enfants (19€/personne)</label>
+                            <div class="number-input">
+                                <button type="button" onclick="changeQuantity('kids', -1)">-</button>
+                                <input type="number" id="kids" name="kids" min="0" value="0" readonly>
+                                <button type="button" onclick="changeQuantity('kids', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boissons -->
+                    <div class="form-section">
+                        <h3>🍷 Boissons (7€/adulte, 1 bouteille pour 3 adultes)</h3>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="vinBlanc" name="vinBlanc" onchange="updateSummary()">
+                                <label for="vinBlanc">Vin blanc</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="vinRouge" name="vinRouge" onchange="updateSummary()">
+                                <label for="vinRouge">Vin rouge</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Allergies -->
+                    <div class="form-section">
+                        <h3>⚠️ Allergies alimentaires</h3>
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="allergiesOui" name="allergies" onchange="toggleAllergiesDetails()">
+                                <label for="allergiesOui">Des membres de votre groupe ont-ils des allergies alimentaires ?</label>
+                            </div>
+                            <div id="allergiesDetails" class="allergies-details">
+                                <label for="allergiesText">Précisez les allergies :</label>
+                                <textarea id="allergiesText" name="allergiesText" rows="3" placeholder="Décrivez les allergies alimentaires..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Confirmer ma participation
+                    </button>
+
+                    <div id="messageContainer"></div>
+                </form>
+            </div>
+
+            <!-- Récapitulatif -->
+            <div class="summary">
+                <h3>💰 Récapitulatif</h3>
+                <div class="summary-line">
+                    <span>Menus adultes:</span>
+                    <span id="summaryAdults">0 × 52€ = 0€</span>
+                </div>
+                <div class="summary-line">
+                    <span>Menus enfants:</span>
+                    <span id="summaryKids">0 × 19€ = 0€</span>
+                </div>
+                <div class="summary-line">
+                    <span>Vin blanc:</span>
+                    <span id="summaryWineWhite">0 bouteille = 0€</span>
+                </div>
+                <div class="summary-line">
+                    <span>Vin rouge:</span>
+                    <span id="summaryWineRed">0 bouteille = 0€</span>
+                </div>
+                <div class="summary-line total">
+                    <span>Total:</span>
+                    <span id="summaryTotal">0€</span>
+                </div>
+                <div style="margin-top: 20px; font-size: 0.9rem; color: #666; text-align: center;">
+                    <p><strong>Virement avant le 31 août 2025</strong></p>
+                    <p style="font-family: monospace; background: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                        FR76 3000 3018 9000 0502 5784 002
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL de votre Google Apps Script - À MODIFIER
+        const APPS_SCRIPT_URL = 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI';
+
+        // Prix
+        const PRICES = {
+            adult: 52,
+            kid: 19,
+            wine: 7
+        };
+
+        function changeQuantity(type, change) {
+            const input = document.getElementById(type);
+            const currentValue = parseInt(input.value);
+            const newValue = Math.max(0, currentValue + change);
+            input.value = newValue;
+            updateSummary();
+        }
+
+        function toggleAllergiesDetails() {
+            const checkbox = document.getElementById('allergiesOui');
+            const details = document.getElementById('allergiesDetails');
+            
+            if (checkbox.checked) {
+                details.classList.add('show');
+            } else {
+                details.classList.remove('show');
+                document.getElementById('allergiesText').value = '';
+            }
+        }
+
+        function updateSummary() {
+            const adults = parseInt(document.getElementById('adults').value);
+            const kids = parseInt(document.getElementById('kids').value);
+            const vinBlanc = document.getElementById('vinBlanc').checked;
+            const vinRouge = document.getElementById('vinRouge').checked;
+
+            // Calculs
+            const adultMenusTotal = adults * PRICES.adult;
+            const kidMenusTotal = kids * PRICES.kid;
+
+            // Calcul des bouteilles (1 pour 3 adultes)
+            const bottlesWhite = vinBlanc ? Math.ceil(adults / 3) : 0;
+            const bottlesRed = vinRouge ? Math.ceil(adults / 3) : 0;
+            
+            const wineWhiteTotal = bottlesWhite * PRICES.wine;
+            const wineRedTotal = bottlesRed * PRICES.wine;
+
+            const grandTotal = adultMenusTotal + kidMenusTotal + wineWhiteTotal + wineRedTotal;
+
+            // Mise à jour de l'affichage
+            document.getElementById('summaryAdults').textContent = `${adults} × ${PRICES.adult}€ = ${adultMenusTotal}€`;
+            document.getElementById('summaryKids').textContent = `${kids} × ${PRICES.kid}€ = ${kidMenusTotal}€`;
+            document.getElementById('summaryWineWhite').textContent = `${bottlesWhite} bouteille${bottlesWhite > 1 ? 's' : ''} = ${wineWhiteTotal}€`;
+            document.getElementById('summaryWineRed').textContent = `${bottlesRed} bouteille${bottlesRed > 1 ? 's' : ''} = ${wineRedTotal}€`;
+            document.getElementById('summaryTotal').textContent = `${grandTotal}€`;
+        }
+
+        function showMessage(message, type) {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = `<div class="message ${type}">${message}</div>`;
+            container.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Gestionnaire de soumission du formulaire
+        document.getElementById('cousinadesForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+
+            // Collecte des données
+            const adults = parseInt(document.getElementById('adults').value);
+            const kids = parseInt(document.getElementById('kids').value);
+            const vinBlanc = document.getElementById('vinBlanc').checked;
+            const vinRouge = document.getElementById('vinRouge').checked;
+            const allergiesPresent = document.getElementById('allergiesOui').checked;
+
+            // Calculs
+            const adultMenusTotal = adults * PRICES.adult;
+            const kidMenusTotal = kids * PRICES.kid;
+            const bottlesWhite = vinBlanc ? Math.ceil(adults / 3) : 0;
+            const bottlesRed = vinRouge ? Math.ceil(adults / 3) : 0;
+            const wineWhiteTotal = bottlesWhite * PRICES.wine;
+            const wineRedTotal = bottlesRed * PRICES.wine;
+            const grandTotal = adultMenusTotal + kidMenusTotal + wineWhiteTotal + wineRedTotal;
+
+            // Préparation des données JSON
+            const formData = {
+                contact: {
+                    nom: document.getElementById('nom').value,
+                    prenom: document.getElementById('prenom').value,
+                    email: document.getElementById('email').value,
+                    tel: document.getElementById('tel').value
+                },
+                reservation: {
+                    nbAdults: adults,
+                    nbKids: kids,
+                    vin: {
+                        blanc: vinBlanc,
+                        rouge: vinRouge
+                    },
+                    allergies: {
+                        present: allergiesPresent ? "oui" : "non",
+                        details: allergiesPresent ? document.getElementById('allergiesText').value : ""
+                    }
+                },
+                prices: {
+                    adultMenus: adultMenusTotal,
+                    kidMenus: kidMenusTotal,
+                    wineWhite: wineWhiteTotal,
+                    wineRed: wineRedTotal,
+                    grandTotal: grandTotal
+                },
+                event: {
+                    virementDeadline: "31 août 2025",
+                    rib: "FR76 3000 3018 9000 0502 5784 002"
+                }
+            };
+
+            try {
+                // Vérification de l'URL
+                if (APPS_SCRIPT_URL === 'VOTRE_URL_GOOGLE_APPS_SCRIPT_ICI') {
+                    throw new Error('Veuillez configurer l\'URL de votre Google Apps Script dans le code.');
+                }
+
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    showMessage('✅ Votre inscription a été enregistrée avec succès ! Vous recevrez une confirmation par email.', 'success');
+                    document.getElementById('cousinadesForm').reset();
+                    updateSummary();
+                } else {
+                    throw new Error(`Erreur serveur: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi:', error);
+                showMessage(`❌ Erreur lors de l'envoi: ${error.message}. Veuillez réessayer ou nous contacter directement.`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirmer ma participation';
+            }
+        });
+
+        // Initialisation
+        updateSummary();
+    </script>
+</body>
+</html>
